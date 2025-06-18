@@ -16,16 +16,10 @@
 package com.embabel.template
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-@ConfigurationPropertiesScan(
-    basePackages = [
-        "com.embabel.template"
-    ]
-)
-class ProjectNameApplication {}
+class ProjectNameApplication
 
 fun main(args: Array<String>) {
     runApplication<ProjectNameApplication>(*args)
