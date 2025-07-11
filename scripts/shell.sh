@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
-export AGENT_APPLICATION=..
+script_dir=$(dirname "$0")
 
-./support/agent.sh
+export AGENT_APPLICATION="${script_dir}/.."
+
+"$script_dir/support/agent.sh"
