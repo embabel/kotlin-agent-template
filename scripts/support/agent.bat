@@ -19,6 +19,6 @@ if not defined AGENT_APPLICATION (
 
 set POM_FILE=%AGENT_APPLICATION%\pom.xml
 
-mvn -U -f %POM_FILE% -Dmaven.test.skip=true spring-boot:run
+"%SCRIPT_DIR%..\..\mvnw.cmd" -U -f %POM_FILE% -Dmaven.test.skip=true spring-boot:run
 
 endlocal
