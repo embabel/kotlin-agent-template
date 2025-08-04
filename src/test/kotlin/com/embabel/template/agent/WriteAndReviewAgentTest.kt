@@ -2,6 +2,7 @@ package com.embabel.template.agent
 
 import com.embabel.agent.domain.io.UserInput
 import com.embabel.agent.testing.unit.FakeOperationContext
+import com.embabel.agent.testing.unit.FakePromptRunner
 import com.embabel.agent.testing.unit.LlmInvocation
 import com.embabel.agent.testing.unit.UnitTestUtils.captureLlmCall
 import org.junit.jupiter.api.Assertions
@@ -22,22 +23,27 @@ internal class WriteAndReviewAgentTest {
     fun testCraftStory() {
         // Create agent with word limits: 200 min, 400 max
         val agent = WriteAndReviewAgent(200, 400)
+        val context = FakeOperationContext.create()
+        val promptRunner = context.promptRunner() as FakePromptRunner
 
-        // Capture the LLM call made during story crafting
-        val llmCall = captureLlmCall(Runnable {
-            agent.craftStory(UserInput("Tell me a story about a brave knight", Instant.now()))
-        })
+        context.expectResponse(Story("One upon a time Sir Galahad . . "))
+
+        agent.craftStory(
+            UserInput("Tell me a story about a brave knight", Instant.now()),
+            context
+        )
 
         // Verify the prompt contains the expected keyword
         Assertions.assertTrue(
-            llmCall.prompt.contains("knight"),
+            promptRunner.llmInvocations.first().prompt.contains("knight"),
             "Expected prompt to contain 'knight'"
         )
 
 
         // Verify the temperature setting for creative output
+        val actual = promptRunner.llmInvocations.first().interaction.llm.temperature
         Assertions.assertEquals(
-            0.9, llmCall.llm!!.temperature, 0.01,
+            0.9, actual, 0.01,
             "Expected temperature to be 0.9: Higher for more creative output"
         )
     }

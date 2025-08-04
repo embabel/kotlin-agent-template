@@ -24,6 +24,13 @@ Add your magic here!
 
 # To run
 
+Create at least one of the following in your env pointing to a valid key:
+
+```bash
+export OPENAI_API_KEY=YOUR_OPENAI_KEY
+export ANTHROPIC_API_KEY=YOUR_ANTHROPIC_API_KEY
+```
+
 Run the shell script to start Embabel under Spring Shell:
 
 ```bash

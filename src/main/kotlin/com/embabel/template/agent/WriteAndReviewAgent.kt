@@ -84,13 +84,10 @@ class WriteAndReviewAgent(
 ) {
 
     @Action
-    fun craftStory(userInput: UserInput): Story =
-        using(
-            LlmOptions(criteria = Auto)
-                .withTemperature(.9), // Higher temperature for more creative output
-        ).withPromptContributor(StoryTeller)
-            .create(
-                """
+    fun craftStory(userInput: UserInput, context: OperationContext): Story =
+        context.promptRunner().withLlm(LlmOptions(criteria = Auto, temperature = 0.9))
+            .withPromptContributor(StoryTeller)
+            .create<Story>("""
             Craft a short story in $storyWordCount words or less.
             The story should be engaging and imaginative.
             Use the user's input as inspiration if possible.
@@ -98,8 +95,7 @@ class WriteAndReviewAgent(
 
             # User input
             ${userInput.content}
-        """.trimIndent()
-            )
+        """.trimIndent())
 
     @AchievesGoal(
         description = "The user has been greeted",
