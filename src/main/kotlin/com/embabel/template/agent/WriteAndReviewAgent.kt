@@ -103,7 +103,7 @@ class WriteAndReviewAgent(
             )
 
     @AchievesGoal(
-        description = "The user has been greeted",
+        description = "A story has been written and reviewed",
         export = Export(remote = true, name = "writeAndReviewStory")
     )
     @Action

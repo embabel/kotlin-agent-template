@@ -34,7 +34,7 @@ internal class WriteAndReviewAgentTest {
 
         // Verify the prompt contains the expected keyword
         Assertions.assertTrue(
-            promptRunner.llmInvocations.first().prompt.contains("knight"),
+            promptRunner.llmInvocations.first().messages.single().content.contains("knight"),
             "Expected prompt to contain 'knight'"
         )
 
@@ -71,12 +71,13 @@ internal class WriteAndReviewAgentTest {
         val llmInvocation: LlmInvocation =
             context.llmInvocations.singleOrNull()
                 ?: error("Expected a single LLM invocation, not ${context.llmInvocations.single()}")
+        val prompt: String = llmInvocation.messages.first().content
         Assertions.assertTrue(
-            llmInvocation.prompt.contains("knight"),
+            prompt.contains("knight"),
             "Expected prompt to contain 'knight'"
         )
         Assertions.assertTrue(
-            llmInvocation.prompt.contains("review"),
+            prompt.contains("review"),
             "Expected prompt to contain 'review'"
         )
     }
