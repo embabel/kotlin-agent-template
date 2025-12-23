@@ -1,10 +1,10 @@
 package com.embabel.template.agent
 
 import com.embabel.agent.domain.io.UserInput
-import com.embabel.agent.testing.unit.FakeOperationContext
-import com.embabel.agent.testing.unit.FakePromptRunner
-import com.embabel.agent.testing.unit.LlmInvocation
-import org.junit.jupiter.api.Assertions
+import com.embabel.agent.test.unit.FakeOperationContext
+import com.embabel.agent.test.unit.FakePromptRunner
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.Instant
 
@@ -33,7 +33,7 @@ internal class WriteAndReviewAgentTest {
         )
 
         // Verify the prompt contains the expected keyword
-        Assertions.assertTrue(
+        assertTrue(
             promptRunner.llmInvocations.first().messages.single().content.contains("knight"),
             "Expected prompt to contain 'knight'"
         )
@@ -41,7 +41,7 @@ internal class WriteAndReviewAgentTest {
 
         // Verify the temperature setting for creative output
         val actual = promptRunner.llmInvocations.first().interaction.llm.temperature
-        Assertions.assertEquals(
+        assertEquals(
             0.7, actual!!, 0.01,
             "Expected temperature to be 0.7: Higher for more creative output"
         )
@@ -68,15 +68,14 @@ internal class WriteAndReviewAgentTest {
         agent.reviewStory(userInput, story, context)
 
         // Verify the LLM invocation contains expected content
-        val llmInvocation: LlmInvocation =
-            context.llmInvocations.singleOrNull()
-                ?: error("Expected a single LLM invocation, not ${context.llmInvocations.single()}")
+        val llmInvocation = context.llmInvocations.singleOrNull()
+            ?: error("Expected a single LLM invocation, not ${context.llmInvocations.single()}")
         val prompt: String = llmInvocation.messages.first().content
-        Assertions.assertTrue(
+        assertTrue(
             prompt.contains("knight"),
             "Expected prompt to contain 'knight'"
         )
-        Assertions.assertTrue(
+        assertTrue(
             prompt.contains("review"),
             "Expected prompt to contain 'review'"
         )

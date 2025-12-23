@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.7</version>
+        <version>3.5.9</version>
         <relativePath/> <!-- Lookup parent from repository -->
     </parent>
     <groupId>com.embabel.template</groupId>
@@ -19,11 +19,12 @@
         <java.version>21</java.version>
         <kotlin.version>2.1.10</kotlin.version>
         <kotlin.compiler.apiVersion>2.1</kotlin.compiler.apiVersion>
-        <embabel-agent.version>0.3.0</embabel-agent.version>
+        <embabel-agent.version>0.3.1</embabel-agent.version>
     </properties>
 
     <dependencies>
 
+        <!-- Main Dependencies -->
         <dependency>
             <groupId>com.embabel.agent</groupId>
             <artifactId>embabel-agent-starter</artifactId>
@@ -32,21 +33,15 @@
 
         <dependency>
             <groupId>com.embabel.agent</groupId>
-            <artifactId>embabel-agent-starter-openai</artifactId>
+            <artifactId>embabel-agent-starter-shell</artifactId>
             <version>${embabel-agent.version}</version>
         </dependency>
 
-        <!-- Uncomment to use Anthropic models -->
-        <!--        <dependency>-->
-        <!--            <groupId>com.embabel.agent</groupId>-->
-        <!--            <artifactId>embabel-agent-starter-anthropic</artifactId>-->
-        <!--            <version>${embabel-agent.version}</version>-->
-        <!--        </dependency>-->
-
         <dependency>
             <groupId>com.embabel.agent</groupId>
-            <artifactId>embabel-agent-starter-shell</artifactId>
+            <artifactId>embabel-agent-test</artifactId>
             <version>${embabel-agent.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Unit and Integration Testing -->
@@ -88,25 +83,58 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>embabel-releases</id>
-            <url>https://repo.embabel.com/artifactory/libs-release</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>embabel-snapshots</id>
-            <url>https://repo.embabel.com/artifactory/libs-snapshot</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <profiles>
+        <profile>
+            <id>openai-models</id>
+            <activation>
+                <property>
+                    <name>env.OPENAI_API_KEY</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.embabel.agent</groupId>
+                    <artifactId>embabel-agent-starter-openai</artifactId>
+                    <version>${embabel-agent.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>anthropic-models</id>
+            <activation>
+                <property>
+                    <name>env.ANTHROPIC_API_KEY</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.embabel.agent</groupId>
+                    <artifactId>embabel-agent-starter-anthropic</artifactId>
+                    <version>${embabel-agent.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
+    <!-- Uncomment these lines to enable Embabel repositories and use snapshots -->
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>embabel-releases</id>-->
+    <!--            <url>https://repo.embabel.com/artifactory/libs-release</url>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>false</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--        <repository>-->
+    <!--            <id>embabel-snapshots</id>-->
+    <!--            <url>https://repo.embabel.com/artifactory/libs-snapshot</url>-->
+    <!--            <releases>-->
+    <!--                <enabled>false</enabled>-->
+    <!--            </releases>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
 
 </project>
