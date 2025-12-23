@@ -17,7 +17,9 @@ Add your magic here!
 
 Illustrates:
 
-- A simple agent using the Embabel `@Agent` and `@Action` annotations
+- An injected demo showing how any Spring component can be injected with an Embabel `Ai` instance to enable it to
+  perform LLM operations.
+- A simple agent
 - Unit tests for an agent verifying prompts and hyperparameters
 
 > For the Java equivalent, see
@@ -42,11 +44,19 @@ When the Embabel shell comes up, invoke the story agent like this:
 x "Tell me a story about...[your topic]"
 ```
 
+Try the following other shell commands:
+
+- `demo`: Runs the same agent, invoked programmatically, instead of dynamically based on user input.
+  See [DemoCommands.kt](./src/main/kotlin/com/embabel/template/DemoShell.kt) for the
+  implementation.
+- `animal`:  Runs a simple demo using an Embabel injected `Ai` instance to call an LLM.
+  See [InjectedDemo](./src/main/kotlin/com/embabel/template/injected/InjectedDemo.kt).
+
 ## Suggested Next Steps
 
 To get a feel for working with Embabel, try the following:
 
-- Modify the prompts in `WriteAndReviewAgent`.
+- Modify the prompts in `WriteAndReviewAgent` and `InjectedDemo`.
 - Experiment with different models and hyperparameters by modifying `withLlm` calls.
 - Integrate your own services, injecting them with Spring. All Embabel `@Agent` classes are Spring beans.
 - Run the tests with `mvn test` and modify them to experiment with prompt verification.
